@@ -1,0 +1,80 @@
+<html>
+  <head>
+    {% load static %}
+    <title>Analysis</title>
+  <link rel="icon" type="image/png" href="{% static 'img/icons/favi.ico' %}"/>
+    <style type="text/css">
+        #login-bg
+        {
+
+            background-image:url('/static/img/images-1.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+
+        }
+    </style>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script type="text/javascript">
+
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+
+
+      function drawChart() {
+
+        var dataArray = [['Location','Applications']]
+
+        {% for c in location %}
+        dataArray.push(['{{ c.city }}',{{ c.count }}])
+
+        {% endfor %}
+
+        var data = new google.visualization.arrayToDataTable(dataArray);
+
+        var options = {
+          title: 'Locations preferred',
+          backgroundColor:'#D8D9F0',
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        
+        //document.getElementById("piechart").style.backgroundColor = "lightblue";
+
+        chart.draw(data, options);
+
+      }
+
+          google.charts.setOnLoadCallback(drawChart1);
+
+        function drawChart1() {
+
+          var dataArray1 = [['Role','Applications']]
+
+          {% for r in role %}
+          dataArray1.push(['{{ r.role }}',{{ r.count }}])
+
+          {% endfor %}
+
+          var data1 = new google.visualization.arrayToDataTable(dataArray1);
+
+          var options1 = {
+            title: 'Roles preferred',
+          backgroundColor:'#D8D9F0',
+          };
+
+          var chart1 = new google.visualization.PieChart(document.getElementById('piechart1'));
+          chart1.draw(data1, options1);
+
+      }
+    </script>
+  </head>
+  <body id="login-bg" style="font-family: sans-serif">
+    <h1 style="text-align: center; color: white; font-size: 40px; padding-top: 20px;">Pie charts depict locations and roles preferred</h1>
+    <center><div>
+    <div id="piechart" style="width: 600px; height: 500px; padding: 30px; float: left; "></div>
+    <div id="piechart1" style="width: 600px; height: 500px; padding: 30px; float: right;"></div>
+  </div></center>
+
+  </body>
+</html>
